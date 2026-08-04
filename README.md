@@ -3,7 +3,7 @@
 A first end-to-end machine learning project predicting median house values in California census districts from demographic and geographic features, using linear regression.
 
 ## Overview
-This project uses the California Housing dataset to predict the median house value of a district from features like median income, house age, and location. After exploring the data and checking how each feature correlates with price, I trained a linear regression model and evaluated it on a held-out test set. The model explains roughly 58% of the variation in house values, with a typical prediction error of about $74,500.
+Used California Housing dataset to predict the median house value of a district from features like median income, house age, and location. I explored the data, built a linear regression baseline, then improved on it with a random forest, and used cross-validation to get an honest estimate of performance. The random forest raised R² from ~0.58 to ~0.80 by capturing the non-linear relationships a straight line can't.
 
 ## Dataset
 - Source: California Housing dataset, via sklearn.datasets.fetch_california_housing (originally derived from the 1990 U.S. Census)
@@ -22,16 +22,20 @@ This project uses the California Housing dataset to predict the median house val
 - Preparation: Split the data into features (X) and target (y), then into an 80/20 train/test split with a fixed random seed for reproducibility.
 - Model: Trained a LinearRegression model as a baseline.
 - Model Update: Trained a Randomforest to imporove accuracy
+- Validation: Used 5-fold cross-validation to check the results weren't an artifact of one lucky split
 
 ## Results
-R² = 0.576:	The model explains ~58% of the variation in house values.
-RMSE = 0.746	Typical prediction error is ~$74,500 (target is in $100,000s).
+Linear Regression = 0.576: Baseline. Limited by its straight-line assumption.
+Random Forest = 0.805: T	Captures non-linear relationships.
+Random Forest (5-fold CV): 	Shuffled cross-validation. the most trustworthy estimate.
 
 ## Key Takeaways
 - Median income is the dominant driver of house value in this data.
-- Location matters and behaves non-linearly, which linear regression struggles to model — a strong hint that a non-linear model would do better.
-- Correlation is only a pairwise, linear signal; a low correlation doesn't mean a feature is useless in a model.
+- The relationships are non-linear, so the random forest clearly beats linear regression.
+- How you validate matters: unshuffled cross-validation on ordered data can understate performance. Shuffling gives a fairer estimate.
 
 ## How to Run
 Open california_housing_price_prediction.ipynb in Google Colab or Jupyter.
 Run all cells top to bottom. The dataset loads automatically via scikit-learn — no manual download needed.
+
+Requirements: numpy, pandas, matplotlib, scikit-learn
